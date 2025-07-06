@@ -1,0 +1,8 @@
+# Python bytecode
+myBlog/__pycache__/
+blogApp/__pycache__/
+*.py[cod]
+
+# JetBrains IDEs
+.idea/
+*.iml
