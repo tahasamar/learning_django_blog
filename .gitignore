@@ -6,3 +6,4 @@ blogApp/__pycache__/
 # JetBrains IDEs
 .idea/
 *.iml
+/blogApp/migrations/
