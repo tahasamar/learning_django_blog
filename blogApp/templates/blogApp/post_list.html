@@ -3,6 +3,7 @@
 {% block title %}All Posts{% endblock %}
 
 {% block body %}
+<div class="container">
 <h1>All Blog Posts</h1>
 <ul>
     {% for post in posts %}
@@ -16,4 +17,5 @@
     {% endfor %}
 </ul>
 <a href="{% url 'firstPage' %}">Back to Home</a>
+</div>
 {% endblock %} 
