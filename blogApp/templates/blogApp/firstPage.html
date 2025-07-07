@@ -7,9 +7,23 @@
 
 {% block body %}
 	<h1>
-    welcome to my blog. this is just a test.
-        <br />
-        <img src="{% static 'images/hassan.jpg' %}" alt="imam" width="500px">
+    Welcome to my blog!
+    <br />
+    <img src="{% static 'images/hassan.jpg' %}" alt="imam" width="500px">
     </h1>
+    <h2>Latest Posts</h2>
+    <ul>
+        {% for post in latest_posts %}
+            <li>
+                <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+                <small>({{ post.created_at|date:"Y-m-d H:i" }})</small>
+            </li>
+        {% empty %}
+            <li>No posts yet.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'post_list' %}">View all posts</a>
 {% endblock %}
+
+
 

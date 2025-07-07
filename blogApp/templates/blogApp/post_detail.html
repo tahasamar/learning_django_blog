@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+<h1>{{ post.title }}</h1>
+<p><small>Published: {{ post.created_at|date:"Y-m-d H:i" }}</small></p>
+<p>Stars: {{ post.stars }}</p>
+<div>
+    {{ post.content|linebreaks }}
+</div>
+<a href="{% url 'post_list' %}">Back to All Posts</a> |
+<a href="{% url 'firstPage' %}">Home</a>
+{% endblock %} 
