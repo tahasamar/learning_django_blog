@@ -58,6 +58,29 @@ small {
     color: #888;
 }
 
+.hashtags {
+    margin: 0.5em 0 1em 0;
+}
+.hashtag {
+    display: inline-block;
+    background: #e0e7ff;
+    color: #2a3a5e;
+    border-radius: 16px;
+    padding: 0.2em 0.8em;
+    margin-right: 0.4em;
+    font-size: 0.95em;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: background 0.2s;
+}
+.hashtag:hover {
+    background: #b4c6fc;
+}
+.no-hashtags {
+    color: #aaa;
+    font-style: italic;
+}
+
 @media (max-width: 800px) {
     .container {
         padding: 1em 0.5em;

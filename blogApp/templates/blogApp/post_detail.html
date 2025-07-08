@@ -7,6 +7,14 @@
 <h1>{{ post.title }}</h1>
 <p><small>Published: {{ post.created_at|date:"Y-m-d H:i" }}</small></p>
 <p>Stars: {{ post.stars }}</p>
+{% if post.tags.all %}
+    <div class="hashtags">
+        {% for tag in post.tags.all %}
+            <span class="hashtag">#{{ tag.title }}</span>
+
+        {% endfor %}
+    </div>
+{% endif %}
 <div>
     {{ post.content|linebreaks }}
 </div>

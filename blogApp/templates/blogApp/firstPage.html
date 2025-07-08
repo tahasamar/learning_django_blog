@@ -9,14 +9,17 @@
 	<div class="container">
 		<h1>
 		Welcome to my blog!
+            <br>
+
 		<br />
-		<img src="{% static 'images/hassan.jpg' %}" alt="imam" width="500px">
 		</h1>
+        I have {{ posts_count}} posts in my blog.
+		<img src="{% static 'images/hassan.jpg' %}" alt="imam" width="500px">
 		<h2>Latest Posts</h2>
 		<ul>
 			{% for post in latest_posts %}
 				<li>
-					<a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+					<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
 					<small>({{ post.created_at|date:"Y-m-d H:i" }})</small>
 				</li>
 			{% empty %}
