@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
@@ -40,3 +41,8 @@ class PostComment(models.Model):
     name = models.CharField(max_length=200)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True,null=False)
+
+
+class Admin(AbstractUser):
+    mobile = models.CharField(max_length=11, unique=True,null=True)
+    is_alive = models.BooleanField(default=False)
