@@ -50,5 +50,7 @@ class PostDetailView(DetailView, FormView):
         else:
             if not self.object.slug in request.session.get('seen_posts'):
                 request.session['seen_posts'].append(self.object.slug)
+                print(request.session['seen_posts'])
+                request.session.save()
 
         return super().get(request,*args,**kwargs)
