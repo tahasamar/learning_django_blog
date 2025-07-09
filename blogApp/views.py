@@ -1,42 +1,42 @@
-from IPython.core.inputsplitter import comment_line_re
 from django.shortcuts import render, get_object_or_404
-
-
+from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic.edit import FormView
+from django.urls import reverse
 from .models import Post
-from django.db.models import Count
 from .forms import PostCommentForm
 
-def firstPage(request):
-    latest_posts = Post.objects.order_by('-created_at')[:3]
-    context = {
-        'posts_count': Post.objects.all().aggregate(Count('id'))['id__count'],
-        'latest_posts': latest_posts
-    }
-    return render(request, "blogApp/firstPage.html", context)
+class FirstPageView(TemplateView):
+    template_name = "blogApp/firstPage.html"
 
-def post_list(request):
-    posts = Post.objects.order_by('-created_at')
-    context = {
-        'posts': posts
-    }
-    return render(request, "blogApp/post_list.html", context)
-
-def post_detail(request, post_slug):
-
-    post = get_object_or_404(Post, slug=post_slug)
-    if request.method == "POST":
-        comment_form = PostCommentForm(request.POST)
-        if comment_form.is_valid():
-            comment_model = comment_form.save(commit=False)
-            comment_model.post = post
-            comment_model.save()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['posts_count'] = Post.objects.all().count()
+        context['latest_posts'] = Post.objects.all().order_by('-created_at')[:3]
+        return context
 
 
-    comment_form = PostCommentForm()
+class PostListView(ListView):
+    template_name = "blogApp/post_list.html"
+    model = Post
+    context_object_name = 'posts'
 
-    context = {
-        'post': post,
-        'comment_form': comment_form
-    }
+class PostDetailView(DetailView, FormView):
+    template_name = "blogApp/post_detail.html"
+    model = Post
+    context_object_name = 'post'
+    form_class = PostCommentForm
 
-    return render(request, "blogApp/post_detail.html", context)
+    def post(self, request, *args, **kwargs): # a wired bug shows up if I don't write this.
+        self.object = self.get_object()
+        return super().post(self, request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse("post_detail", args=[self.get_object().slug])
+
+    def form_valid(self, form):
+        form_model = form.save(commit=False)
+        form_model.post = self.get_object()
+        form_model.save()
+
+        return super().form_valid(form)
+

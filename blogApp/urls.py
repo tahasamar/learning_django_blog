@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.firstPage, name='firstPage'),
-    path('posts/', views.post_list, name='post_list'),
-    path('posts/<slug:post_slug>/', views.post_detail, name='post_detail'),
+    path('', views.FirstPageView.as_view(), name='firstPage'),
+    path('posts/', views.PostListView.as_view(), name='post_list'),
+    path('posts/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
 ]
