@@ -18,6 +18,18 @@
 <div>
     {{ post.content|linebreaks }}
 </div>
+<form method="post">
+{% csrf_token %}
+    {{ comment_form }}
+    <button name="submit">submit</button>
+
+</form>
+{% for comment in post.postcomment_set.all %}
+
+    <p>{{ comment.comment }}</p>
+
+{% endfor %}
+
 <a href="{% url 'post_list' %}">Back to All Posts</a> |
 <a href="{% url 'firstPage' %}">Home</a>
 </div>
