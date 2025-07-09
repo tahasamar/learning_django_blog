@@ -11,9 +11,17 @@
 		Welcome to my blog!
             <br>
 
+
 		<br />
 		</h1>
         I have {{ posts_count}} posts in my blog.
+		<br />
+
+        # -> your last viewed posts : {% for seen_post in seen_posts %}
+        	<p>{{ seen_post.title }}</p>
+        {% endfor %}
+
+
 		<img src="{% static 'images/hassan.jpg' %}" alt="imam" width="500px">
 		<h2>Latest Posts</h2>
 		<ul>

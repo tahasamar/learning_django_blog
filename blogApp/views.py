@@ -12,6 +12,7 @@ class FirstPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['posts_count'] = Post.objects.all().count()
         context['latest_posts'] = Post.objects.all().order_by('-created_at')[:3]
+        context['seen_posts'] = self.request.session.get('seen_posts', [])
         return context
 
 
@@ -28,7 +29,7 @@ class PostDetailView(DetailView, FormView):
 
     def post(self, request, *args, **kwargs): # a wired bug shows up if I don't write this.
         self.object = self.get_object()
-        return super().post(self, request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse("post_detail", args=[self.get_object().slug])
@@ -40,3 +41,13 @@ class PostDetailView(DetailView, FormView):
 
         return super().form_valid(form)
 
+    def get(self,request,*args,**kwargs):
+        self.object = self.get_object()
+
+        if not request.session.get('seen_posts'):
+            request.session['seen_posts'] = [self.object.slug]
+        else:
+            if not self.object.slug in request.session.get('seen_posts'):
+                request.session['seen_posts'].append(self.object.slug)
+
+        return super().get(request,*args,**kwargs)
