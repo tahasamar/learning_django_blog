@@ -50,8 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-'whitenoise.middleware.WhiteNoiseMiddleware',
+    
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'myBlog.urls'
@@ -130,11 +130,8 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-<<<<<<< HEAD
-=======
-STATIC_ROOT = 'static_root'
+STATIC_ROOT = 'statics_root'
 
->>>>>>> 013c7550a3957496a2571a918cb14239e3ae5190
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
