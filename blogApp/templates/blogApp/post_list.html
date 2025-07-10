@@ -5,6 +5,7 @@
 {% block body %}
 <div class="container">
 <h1>All Blog Posts</h1>
+<p>page number {{ page_obj.number }}</p>
 <ul>
     {% for post in posts %}
         <li>
@@ -16,6 +17,15 @@
         <li>No posts available.</li>
     {% endfor %}
 </ul>
+
+<p> Pages: </p>
+
+<ul> {# this have to be vertival#}
+    {% for page_number in paginator.page_range %}
+    <a href="?page={{ page_number }}"> <li {% if page_obj.number == page_number %}style="background-color: #e0e7ff" {% endif %}>{{ page_number }}</li></a>
+    {% endfor %}
+</ul>
+
 <a href="{% url 'firstPage' %}">Back to Home</a>
 </div>
 {% endblock %} 

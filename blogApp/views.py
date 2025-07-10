@@ -20,6 +20,10 @@ class PostListView(ListView):
     template_name = "blogApp/post_list.html"
     model = Post
     context_object_name = 'posts'
+    paginate_by = 10
+
+
+
 
 class PostDetailView(DetailView, FormView):
     template_name = "blogApp/post_detail.html"
