@@ -1,36 +1,99 @@
-{% extends "base.html" %}
+{% extends 'shared/_base.html' %}
+{% load static %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}
+	{{ post.title }}
+{% endblock %}
 
-{% block body %}
-<div class="container">
-<h1>{{ post.title }}</h1>
-<p><small>Published: {{ post.created_at|date:"Y-m-d H:i" }}</small></p>
-<p>Stars: {{ post.stars }}</p>
-{% if post.tags.all %}
-    <div class="hashtags">
-        {% for tag in post.tags.all %}
-            <span class="hashtag">#{{ tag.title }}</span>
+{% block banner %}
 
-        {% endfor %}
-    </div>
-{% endif %}
-<div>
-    {{ post.content|linebreaks }}
-</div>
-<form method="post">
-{% csrf_token %}
-    {{ form }}
-    <button name="submit">submit</button>
+{% endblock %}
 
-</form>
-{% for comment in post.postcomment_set.all %}
 
-    <p>{{ comment.comment }}</p>
+{% block content %}
 
-{% endfor %}
+    <section class="blog-details-area ptb-100">
+			<div class="container">
+				<div class="row">
+                    <div class="col-lg-8">
+                        <div class="blog-details">
+                            <div class="article-img">
+                                <img src="{% static 'assets/img/blog-details.jpg'%}" alt="blog-details">
+                                <div class="date">{{ post.created_at.date}}</div>
+                            </div>
 
-<a href="{% url 'post_list' %}">Back to All Posts</a> |
-<a href="{% url 'firstPage' %}">Home</a>
-</div>
-{% endblock %} 
+                            <div class="article-content">
+                                <ul class="category">
+                                    {%  for tag in post.tags.all %}
+                                    <li><a href="#">{{ tag.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+
+                                <h3>{{ post.title }}</h3>
+                                <p>{{ post.content|linebreaks }}</p>
+                                <div class="share-post">
+                                    <ul>
+                                        <li><a href="#"><i class="icofont-facebook"></i></a></li>
+                                        <li><a href="#"><i class="icofont-twitter"></i></a></li>
+                                        <li><a href="#"><i class="icofont-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="icofont-instagram"></i></a></li>
+                                        <li><a href="#"><i class="icofont-vimeo"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br/>
+                        <br/>
+
+                        <div class="post-comments">
+                            <h3>نظرات</h3>
+                            {% for comment in post.postcomment_set.all %}
+                            <div class="single-comment">
+
+
+                                <div class="comment-content">
+                                    <h4>{{ comment.name }}</h4>
+                                    <P>{{ comment.comment }}</P>
+
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        <div class="leave-a-reply">
+                            <h3>نظرتان را بنویسید</h3>
+                            <div class="row">
+                                <form action="." method="post" class="col-md-12">
+                                    {% csrf_token %}
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        {{ form.name }}
+                                    </div>
+                                    {{ form.errors.name }}
+                                </div>
+
+
+
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        {{ form.comment }}
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12">
+                                    <button type="submit" class="btn btn-primary">ارسال</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+					</div>
+
+					<div class="col-lg-4">
+                    </div>
+                </div>
+			</div>
+            </div>
+		</section>
+
+{% endblock %}
