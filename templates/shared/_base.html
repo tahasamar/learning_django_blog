@@ -59,11 +59,24 @@
                     <img src="{% static 'assets/img/logo.png' %}" alt="logo">
                 </a>
 
+
+
+
                 <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                     <ul class="navbar-nav nav ml-auto">
-                        <li class="nav-item"><a href="{% url 'post_list' %}" class="nav-link">خانه</a>
+                        <li class="nav-item"><a href="{% url 'post_list' %}" class="nav-link">خانه</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item"> <i class="icofont-user-male" style="color: white"></i><a>سلام {{ request.user.username }}</a>
+                    <ul class="dropdown_menu">
+                                        <li><a href="{% url 'logout' %}">خروج</a></li>
+                                  </ul>
 
-                        </li>
+                    </li>
+                            {% else %}
+
+                                <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">ورود / ثبت نام</a></li>
+                        {% endif%}
+
 
 {#                        <li class="nav-item"><a href="#" class="nav-link active">صفحات</a>#}
 {#                            <ul class="dropdown_menu">#}
@@ -132,6 +145,7 @@
 
                     </ul>
                 </div>
+
 
                 <div class="mr-auto others-option">
                     <ul class="navbar-nav">

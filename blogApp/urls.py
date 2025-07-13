@@ -23,4 +23,7 @@ urlpatterns = [
     path('', views.FirstPageView.as_view(), name='firstPage'),
     path('posts/', views.PostListView.as_view(), name='post_list'),
     path('posts/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('signup/', views.SignUpView.as_view(), name='signup'),
 ]

@@ -1,9 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import FormView
 from django.urls import reverse
-from .models import Post
-from .forms import PostCommentForm
+from .models import Post, Admin
+from .forms import PostCommentForm, LoginForm, SignUpForm
 
 class FirstPageView(TemplateView):
     template_name = "blogApp/firstPage.html"
@@ -20,7 +22,7 @@ class PostListView(ListView):
     template_name = "blogApp/post_list.html"
     model = Post
     context_object_name = 'posts'
-    paginate_by = 10
+    paginate_by = 12
 
 
 
@@ -58,3 +60,45 @@ class PostDetailView(DetailView, FormView):
                 request.session.save()
 
         return super().get(request,*args,**kwargs)
+
+
+class LoginView(FormView):
+    template_name = 'blogApp/login.html'
+    form_class = LoginForm
+    success_url = '/'
+
+    def get(self,request,*args,**kwargs):
+        if self.request.user.is_authenticated:
+            return redirect(self.success_url)
+        return super().get(request,*args,**kwargs)
+
+    def form_valid(self, form):
+        user = authenticate(self.request, username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+        if user is not None:
+            login(self.request,user)
+            return super().form_valid(form)
+        else:
+            form.add_error(None , "نام کاربری یا رمزعبور صحیح نیست")
+            return super().form_invalid(form)
+
+
+class LogoutView(View):
+    def get(self,request,*args,**kwargs):
+        logout(request)
+        return redirect('/')
+
+
+class SignUpView(FormView):
+    template_name = 'blogApp/signup.html'
+    form_class = SignUpForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        if Admin.objects.get(username=form.cleaned_data['username']).is_active:
+            form.add_error('username','نام کاربری تکراری است')
+            return super().form_invalid(form)
+        user=Admin.objects.create_user(form.cleaned_data['username'], "", form.cleaned_data['password'])
+        login(self.request,user )
+        return super().form_valid(form)
+
+
